@@ -217,11 +217,6 @@ img {
 }
 
 /* ── player ── */
-[id^="jwplayer-"] {
-  width: 100% !important;
-  height: 100% !important;
-}
-
 .player-button {
   display: inline-grid;
   width: 2.75rem;
@@ -260,6 +255,51 @@ img {
   border-color: var(--color-accent-hover);
 }
 
+.quality-select-wrap {
+  display: inline-flex;
+  height: 2.75rem;
+  min-width: 6.5rem;
+  align-items: center;
+  gap: 0.35rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-surface-2);
+  padding: 0 0.55rem 0 0.65rem;
+  color: var(--color-text);
+}
+
+.quality-select-wrap:focus-within {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.quality-select {
+  min-width: 4rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  outline: none;
+}
+
+.quality-select option {
+  background: #1a1a1a;
+  color: #ececec;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 @media (min-width: 1800px) and (min-height: 900px) {
   .player-button {
     width: 4rem;
@@ -269,5 +309,16 @@ img {
   .player-button svg {
     width: 1.75rem;
     height: 1.75rem;
+  }
+
+  .quality-select-wrap {
+    height: 4rem;
+    min-width: 10rem;
+    padding: 0 1rem;
+  }
+
+  .quality-select {
+    min-width: 6rem;
+    font-size: 1.125rem;
   }
 }

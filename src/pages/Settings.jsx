@@ -83,7 +83,7 @@ export default function Settings() {
           Hapus riwayat tonton
         </button>
         <p className="px-1 text-center text-xs text-[#666]">
-          Pemutar JWPlayer · Google Cast tersedia
+          HLS.js · kualitas adaptif aktif
         </p>
       </section>
     </div>
