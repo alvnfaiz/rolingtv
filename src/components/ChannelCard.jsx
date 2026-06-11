@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Play, Radio } from 'lucide-react'
 import FavoriteButton from './FavoriteButton'
+import { getCategoryLabel } from '../lib/ui'
 
 function ChannelCard({ channel, index = 0, featured = false }) {
   const [imageFailed, setImageFailed] = useState(false)
@@ -25,12 +26,12 @@ function ChannelCard({ channel, index = 0, featured = false }) {
           featured ? 'min-h-[22rem] p-5 sm:p-6 tv:min-h-[28rem]' : 'min-h-44 p-4 sm:min-h-52 tv:min-h-64 tv:p-6',
         ].join(' ')}
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/10 via-transparent to-rose-500/10 opacity-0 transition group-hover:opacity-100 group-focus-within:opacity-100" />
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-400/8 via-cyan-400/10 to-rose-500/10 opacity-0 transition group-hover:opacity-100 group-focus-within:opacity-100" />
         <div className="relative z-10 flex h-full flex-col">
           <div className="flex items-start justify-between gap-3">
             <span className="inline-flex items-center gap-1.5 rounded-full border border-red-300/30 bg-red-500/18 px-2.5 py-1 text-[0.68rem] font-black uppercase tracking-[0.16em] text-red-100 tv:text-sm">
-              <span className="h-2 w-2 rounded-full bg-red-400 shadow-[0_0_16px_rgba(248,113,113,0.9)]" />
-              Live
+              <span className="h-2 w-2 animate-pulse rounded-full bg-red-400 shadow-[0_0_16px_rgba(248,113,113,0.9)]" />
+              LIVE
             </span>
             <FavoriteButton channel={channel} compact={!featured} />
           </div>
@@ -46,7 +47,7 @@ function ChannelCard({ channel, index = 0, featured = false }) {
               ) : (
                 <img
                   src={channel.logo}
-                  alt={`${channel.name} logo`}
+                  alt={`Logo ${channel.name}`}
                   loading="lazy"
                   decoding="async"
                   onError={() => setImageFailed(true)}
@@ -66,7 +67,7 @@ function ChannelCard({ channel, index = 0, featured = false }) {
               </span>
             </div>
             <div className="flex items-center justify-between gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-white/55 tv:text-sm">
-              <span className="truncate">{channel.category}</span>
+              <span className="truncate">{getCategoryLabel(channel.category)}</span>
               {channel.number && <span className="text-white/35">#{channel.number}</span>}
             </div>
           </div>

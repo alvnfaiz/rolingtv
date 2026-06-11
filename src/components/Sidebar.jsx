@@ -1,12 +1,12 @@
 import { NavLink } from 'react-router-dom'
-import { Heart, Home, Search, Settings, Tv, UserRound } from 'lucide-react'
+import { Heart, Home, Info, Search, Settings, Tv } from 'lucide-react'
 
 const items = [
-  { to: '/', label: 'Home', icon: Home },
-  { to: '/search', label: 'Search', icon: Search },
-  { to: '/favorites', label: 'Favorites', icon: Heart },
-  { to: '/developer', label: 'Developer', icon: UserRound },
-  { to: '/settings', label: 'Settings', icon: Settings },
+  { to: '/', label: 'Beranda', icon: Home },
+  { to: '/search', label: 'Cari', icon: Search },
+  { to: '/favorites', label: 'Favorit', icon: Heart },
+  { to: '/developer', label: 'Tentang', icon: Info },
+  { to: '/settings', label: 'Pengaturan', icon: Settings },
 ]
 
 export default function Sidebar() {
@@ -16,8 +16,8 @@ export default function Sidebar() {
         <NavLink
           to="/"
           data-focusable="true"
-          aria-label="Kufa TV home"
-          className="grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-cyan-300 to-rose-500 text-white shadow-xl shadow-cyan-500/20 focus:outline-none focus:ring-4 focus:ring-cyan-300/60 tv:h-20 tv:w-20"
+          aria-label="Beranda SRG TV"
+          className="grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-amber-300 via-cyan-300 to-rose-500 text-white shadow-xl shadow-cyan-500/20 focus:outline-none focus:ring-4 focus:ring-cyan-300/60 tv:h-20 tv:w-20"
         >
           <Tv className="h-7 w-7 tv:h-11 tv:w-11" />
         </NavLink>
@@ -31,6 +31,7 @@ export default function Sidebar() {
                 end={item.to === '/'}
                 data-focusable="true"
                 aria-label={item.label}
+                title={item.label}
                 className={({ isActive }) => [
                   'grid h-14 w-14 place-items-center rounded-2xl border transition focus:outline-none focus:ring-4 focus:ring-cyan-300/60 tv:h-20 tv:w-20',
                   isActive

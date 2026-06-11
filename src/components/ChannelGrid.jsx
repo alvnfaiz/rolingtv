@@ -1,6 +1,11 @@
 import ChannelCard from './ChannelCard'
 
-export default function ChannelGrid({ channels, emptyTitle = 'No channels found', emptyText = 'Try a different filter.', featured = false }) {
+export default function ChannelGrid({
+  channels,
+  emptyTitle = 'Saluran tidak ditemukan',
+  emptyText = 'Coba kategori atau kata kunci lain.',
+  featured = false,
+}) {
   if (!channels?.length) {
     return (
       <div className="rounded-card border border-white/10 bg-white/[0.06] px-6 py-14 text-center backdrop-blur-2xl">

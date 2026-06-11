@@ -1,8 +1,8 @@
 import { Helmet } from 'react-helmet-async'
 
-const siteName = 'Kufa TV'
-const defaultDescription = 'Watch live IPTV channels in a modern OTT streaming app with favorites, search, categories, and HLS playback.'
-const defaultUrl = 'https://kufa-tv.local/'
+const siteName = 'SRG TV'
+const defaultDescription = 'Nonton siaran TV langsung gratis di SRG TV. Olahraga, berita, film, musik, dan hiburan dalam satu aplikasi streaming.'
+const defaultUrl = 'https://srg-tv.local/'
 const themeColor = '#06070d'
 
 export default function Seo({

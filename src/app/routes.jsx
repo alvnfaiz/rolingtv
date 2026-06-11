@@ -30,7 +30,7 @@ export default function AppRoutes() {
   const location = useLocation()
 
   return (
-    <Suspense fallback={<Loading label="Tuning live channels" />}>
+    <Suspense fallback={<Loading label="Menyiapkan saluran TV" />}>
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<PageFrame><Home /></PageFrame>} />

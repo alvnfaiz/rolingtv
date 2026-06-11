@@ -57,7 +57,7 @@ export const useTvStore = create(
       clearRecentlyWatched: () => set({ recentlyWatchedIds: [] }),
     }),
     {
-      name: 'kufa-tv-state',
+      name: 'srg-tv-state',
       partialize: (state) => ({
         favoriteIds: state.favoriteIds,
         recentlyWatchedIds: state.recentlyWatchedIds,

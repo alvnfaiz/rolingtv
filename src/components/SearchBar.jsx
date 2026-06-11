@@ -1,26 +1,27 @@
 import { Search, X } from 'lucide-react'
 
-export default function SearchBar({ value, onChange, autoFocus = false, placeholder = 'Search live channels' }) {
+export default function SearchBar({ value, onChange, autoFocus = false, placeholder = 'Cari saluran...' }) {
   return (
-    <div className="relative w-full">
-      <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-white/45 tv:h-7 tv:w-7" />
+    <label className="relative block">
+      <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#8a8a8a]" />
       <input
+        type="search"
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        autoFocus={autoFocus}
         placeholder={placeholder}
-        className="h-14 w-full rounded-card border border-white/10 bg-white/[0.08] pl-12 pr-12 text-base font-semibold text-white outline-none backdrop-blur-2xl transition placeholder:text-white/35 focus:border-cyan-300/60 focus:ring-4 focus:ring-cyan-300/25 tv:h-20 tv:pl-16 tv:text-2xl"
+        autoFocus={autoFocus}
+        className="h-11 w-full rounded border border-[#2e2e2e] bg-[#1a1a1a] py-2 pl-10 pr-10 text-[0.9375rem] text-[#ececec] placeholder:text-[#666] focus:border-[#ff5722] focus:outline-none"
       />
       {value && (
         <button
           type="button"
-          aria-label="Clear search"
           onClick={() => onChange('')}
-          className="absolute right-3 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full text-white/60 transition hover:bg-white/10 hover:text-white focus:outline-none focus:ring-4 focus:ring-cyan-300/50 tv:h-12 tv:w-12"
+          aria-label="Hapus pencarian"
+          className="absolute right-2 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded text-[#8a8a8a] hover:bg-[#242424] hover:text-[#ececec]"
         >
-          <X className="h-5 w-5 tv:h-7 tv:w-7" />
+          <X className="h-3.5 w-3.5" />
         </button>
       )}
-    </div>
+    </label>
   )
 }

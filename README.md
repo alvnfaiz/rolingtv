@@ -1,4 +1,4 @@
-# 📺 Kufa TV
+# 📺 SRG TV
 
 A modern IPTV / Live TV streaming web application built with **React.js** and **Tailwind CSS**.
 
@@ -15,16 +15,16 @@ with a premium OTT-style interface.
 ## ✨ Features
 
 ### 🎬 Live TV Streaming
-- HLS (.m3u8) stream support
+- HLS (.m3u8) stream support via JWPlayer
 - Fast live playback
-- Custom video player
+- JWPlayer with Google Cast support
 - Fullscreen support
 - Volume controls
 - Play / Pause controls
 
 ### 📡 Adaptive Quality Streaming
 
-Supports automatic quality switching using **HLS.js**.
+Supports adaptive streaming using **JWPlayer**.
 
 Features:
 - Auto quality mode (adaptive bitrate)
@@ -74,7 +74,7 @@ Optimized for:
 - React.js
 - Tailwind CSS
 - React Router DOM
-- HLS.js
+- JWPlayer
 - Zustand
 - Framer Motion
 - Lucide React
@@ -176,7 +176,7 @@ Arrow Down → Next Channel
 
 ```bash
 git clone your-repo-url
-cd kufa-tv
+cd srg-tv
 npm install
 npm run dev
 ```
@@ -194,7 +194,7 @@ npm run preview
 
 ## 🎨 UI Design
 
-Kufa TV features a modern OTT-style UI inspired by:
+SRG TV features a modern OTT-style UI inspired by:
 - Netflix
 - YouTube TV
 - Modern IPTV apps
@@ -230,4 +230,4 @@ Includes:
 
 This project is for personal and educational use only.
 
-Make sure you have rights to stream any content used in **Kufa TV**.
+Make sure you have rights to stream any content used in **SRG TV**.

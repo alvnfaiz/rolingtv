@@ -1,31 +1,32 @@
 import { NavLink } from 'react-router-dom'
-import { Heart, Home, Search, Settings, UserRound } from 'lucide-react'
+import { Heart, Home, Info, Search, Settings } from 'lucide-react'
 
 const items = [
-  { to: '/', label: 'Home', icon: Home },
-  { to: '/search', label: 'Search', icon: Search },
-  { to: '/favorites', label: 'Saved', icon: Heart },
-  { to: '/developer', label: 'Dev', icon: UserRound },
-  { to: '/settings', label: 'Settings', icon: Settings },
+  { to: '/', label: 'Beranda', icon: Home, end: true },
+  { to: '/search', label: 'Cari', icon: Search },
+  { to: '/favorites', label: 'Favorit', icon: Heart },
+  { to: '/developer', label: 'Tentang', icon: Info },
+  { to: '/settings', label: 'Atur', icon: Settings },
 ]
 
 export default function BottomNav() {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-white/10 bg-[#06070d]/88 px-2 py-2 backdrop-blur-2xl lg:hidden">
-      <div className="grid grid-cols-5 gap-1">
+    <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-[#2e2e2e] bg-[#1a1a1a] md:hidden">
+      <div className="grid grid-cols-5">
         {items.map((item) => {
           const Icon = item.icon
           return (
             <NavLink
               key={item.to}
               to={item.to}
-              end={item.to === '/'}
+              end={item.end}
+              aria-label={item.label}
               className={({ isActive }) => [
-                'flex min-h-14 flex-col items-center justify-center gap-1 rounded-2xl text-xs font-bold transition focus:outline-none focus:ring-4 focus:ring-cyan-300/60',
-                isActive ? 'bg-cyan-300 text-slate-950' : 'text-white/60 hover:bg-white/10 hover:text-white',
+                'flex flex-col items-center gap-0.5 py-2.5 text-[0.625rem] font-medium transition',
+                isActive ? 'text-[#ff5722]' : 'text-[#8a8a8a]',
               ].join(' ')}
             >
-              <Icon className="h-5 w-5" />
+              <Icon className="h-5 w-5" strokeWidth={1.75} />
               <span>{item.label}</span>
             </NavLink>
           )

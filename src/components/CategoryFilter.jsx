@@ -1,23 +1,25 @@
 import { NavLink } from 'react-router-dom'
 import channelData from '../lib/channelData'
+import { getCategoryLabel } from '../lib/ui'
 
 const categories = Array.from(new Set(channelData.map((channel) => channel.category).filter(Boolean)))
 
-export default function CategoryFilter({ active = 'All', compact = false }) {
+export default function CategoryFilter({ active = 'Semua' }) {
+  const isAllActive = active === 'Semua' || active === 'All'
+
   return (
-    <div className="no-scrollbar flex gap-2 overflow-x-auto py-1">
+    <div className="no-scrollbar -mx-1 flex gap-1.5 overflow-x-auto px-1 py-1">
       <NavLink
         to="/"
         data-focusable="true"
         className={({ isActive }) => [
-          'shrink-0 rounded-full border px-4 py-2 text-sm font-bold transition focus:outline-none focus:ring-4 focus:ring-cyan-300/60 tv:px-7 tv:py-4 tv:text-xl',
-          (isActive && active === 'All') || active === 'All'
-            ? 'border-cyan-200/70 bg-cyan-300 text-slate-950 shadow-lg shadow-cyan-400/20'
-            : 'border-white/10 bg-white/[0.07] text-white/70 hover:bg-white/[0.12]',
-          compact ? 'tv:text-lg' : '',
+          'shrink-0 rounded px-3 py-1.5 text-sm font-medium transition',
+          (isActive && isAllActive) || isAllActive
+            ? 'bg-[#ff5722] text-white'
+            : 'bg-[#242424] text-[#8a8a8a] hover:text-[#ececec]',
         ].join(' ')}
       >
-        All
+        Semua
       </NavLink>
       {categories.map((category) => (
         <NavLink
@@ -25,13 +27,13 @@ export default function CategoryFilter({ active = 'All', compact = false }) {
           to={`/category/${encodeURIComponent(category)}`}
           data-focusable="true"
           className={({ isActive }) => [
-            'shrink-0 rounded-full border px-4 py-2 text-sm font-bold transition focus:outline-none focus:ring-4 focus:ring-cyan-300/60 tv:px-7 tv:py-4 tv:text-xl',
+            'shrink-0 rounded px-3 py-1.5 text-sm font-medium transition',
             isActive || active === category
-              ? 'border-cyan-200/70 bg-cyan-300 text-slate-950 shadow-lg shadow-cyan-400/20'
-              : 'border-white/10 bg-white/[0.07] text-white/70 hover:bg-white/[0.12]',
+              ? 'bg-[#ff5722] text-white'
+              : 'bg-[#242424] text-[#8a8a8a] hover:text-[#ececec]',
           ].join(' ')}
         >
-          {category}
+          {getCategoryLabel(category)}
         </NavLink>
       ))}
     </div>

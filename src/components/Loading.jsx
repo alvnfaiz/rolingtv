@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Wifi } from "lucide-react";
 
-export default function Loading({ label = "Loading" }) {
+export default function Loading({ label = "Memuat" }) {
   return (
     <div className="grid min-h-[50vh] place-items-center px-6 text-center">
       <div className="flex flex-col items-center gap-6">
