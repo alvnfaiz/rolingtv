@@ -1,10 +1,7 @@
 import { NavLink } from 'react-router-dom'
-import channelData from '../lib/channelData'
 import { getCategoryLabel } from '../lib/ui'
 
-const categories = Array.from(new Set(channelData.map((channel) => channel.category).filter(Boolean)))
-
-export default function CategoryFilter({ active = 'Semua' }) {
+export default function CategoryFilter({ categories = [], active = 'Semua' }) {
   const isAllActive = active === 'Semua' || active === 'All'
 
   return (

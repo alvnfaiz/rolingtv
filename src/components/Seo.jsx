@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async'
 const siteName = 'SRG TV'
 const defaultDescription = 'Nonton siaran TV langsung gratis di SRG TV. Olahraga, berita, film, musik, dan hiburan dalam satu aplikasi streaming.'
 const defaultUrl = 'https://srg-tv.local/'
-const themeColor = '#06070d'
+const themeColor = '#101010'
 
 export default function Seo({
   title = siteName,

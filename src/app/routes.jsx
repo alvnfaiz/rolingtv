@@ -1,6 +1,5 @@
 import { lazy, Suspense } from 'react'
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
-import { AnimatePresence, motion } from 'framer-motion'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import Loading from '../components/Loading'
 
 const Home = lazy(() => import('../pages/Home'))
@@ -12,38 +11,20 @@ const Settings = lazy(() => import('../pages/Settings'))
 const Developer = lazy(() => import('../pages/Developer'))
 const NotFound = lazy(() => import('../pages/NotFound'))
 
-function PageFrame({ children }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 18 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -14 }}
-      transition={{ duration: 0.24, ease: 'easeOut' }}
-      className="min-h-full"
-    >
-      {children}
-    </motion.div>
-  )
-}
-
 export default function AppRoutes() {
-  const location = useLocation()
-
   return (
-    <Suspense fallback={<Loading label="Menyiapkan saluran TV" />}>
-      <AnimatePresence mode="wait">
-        <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<PageFrame><Home /></PageFrame>} />
-          <Route path="/live" element={<Navigate to="/" replace />} />
-          <Route path="/live/:id" element={<PageFrame><Player /></PageFrame>} />
-          <Route path="/favorites" element={<PageFrame><Favorites /></PageFrame>} />
-          <Route path="/category/:name" element={<PageFrame><Category /></PageFrame>} />
-          <Route path="/search" element={<PageFrame><Search /></PageFrame>} />
-          <Route path="/settings" element={<PageFrame><Settings /></PageFrame>} />
-          <Route path="/developer" element={<PageFrame><Developer /></PageFrame>} />
-          <Route path="*" element={<PageFrame><NotFound /></PageFrame>} />
-        </Routes>
-      </AnimatePresence>
+    <Suspense fallback={<Loading label="Menyiapkan saluran" />}>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/live" element={<Navigate to="/" replace />} />
+        <Route path="/live/:id" element={<Player />} />
+        <Route path="/favorites" element={<Favorites />} />
+        <Route path="/category/:name" element={<Category />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/developer" element={<Developer />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </Suspense>
   )
 }

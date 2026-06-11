@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { motion } from 'framer-motion'
 import {
   AlertTriangle,
   Cast,
+  List,
   Maximize,
   Minimize,
   Pause,
@@ -14,6 +14,7 @@ import {
   Volume2,
   VolumeX,
 } from 'lucide-react'
+import ChannelListPanel from './ChannelListPanel'
 import FavoriteButton from './FavoriteButton'
 import { loadJwPlayer } from '../lib/jwplayerLoader'
 import { getCategoryLabel } from '../lib/ui'
@@ -21,7 +22,7 @@ import { useTvStore } from '../store/tvStore'
 
 const normalizeStreamUrl = (url = '') => url.replace(/&amp;/g, '&')
 
-export default function VideoPlayer({ channel, onNext, onPrevious }) {
+export default function VideoPlayer({ channel, channels = [], onNext, onPrevious, onSelectChannel }) {
   const containerRef = useRef(null)
   const shellRef = useRef(null)
   const playerRef = useRef(null)
@@ -40,15 +41,18 @@ export default function VideoPlayer({ channel, onNext, onPrevious }) {
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [reloadKey, setReloadKey] = useState(0)
   const [castAvailable, setCastAvailable] = useState(false)
+  const [listOpen, setListOpen] = useState(false)
 
   const streamUrl = useMemo(() => normalizeStreamUrl(channel?.url), [channel?.url])
   const playerId = useMemo(() => `jwplayer-${channel?.id || 'live'}`, [channel?.id])
 
-  const showControls = useCallback(() => {
+  const showControls = useCallback((autoHide = true) => {
     setControlsVisible(true)
     window.clearTimeout(hideTimerRef.current)
-    hideTimerRef.current = window.setTimeout(() => setControlsVisible(false), 3000)
-  }, [])
+    if (autoHide && !listOpen) {
+      hideTimerRef.current = window.setTimeout(() => setControlsVisible(false), 3000)
+    }
+  }, [listOpen])
 
   const reconnect = useCallback(() => {
     setError('')
@@ -191,6 +195,10 @@ export default function VideoPlayer({ channel, onNext, onPrevious }) {
         event.preventDefault()
         toggleFullscreen()
       }
+      if (event.key.toLowerCase() === 'l') {
+        event.preventDefault()
+        setListOpen((value) => !value)
+      }
       showControls()
     }
 
@@ -208,6 +216,17 @@ export default function VideoPlayer({ channel, onNext, onPrevious }) {
   const toggleCast = () => {
     showControls()
     playerRef.current?.castToggle?.()
+  }
+
+  const toggleList = () => {
+    setListOpen((value) => {
+      const next = !value
+      if (next) {
+        window.clearTimeout(hideTimerRef.current)
+        setControlsVisible(true)
+      }
+      return next
+    })
   }
 
   function toggleFullscreen() {
@@ -236,76 +255,61 @@ export default function VideoPlayer({ channel, onNext, onPrevious }) {
     >
       <div ref={containerRef} className="h-screen w-full bg-black" />
 
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/15 to-black/65" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/80 to-transparent" />
 
       {isLoading && !error && (
-        <div className="absolute inset-0 grid place-items-center bg-black/35">
-          <div className="flex flex-col items-center gap-4">
-            <div className="relative h-16 w-16 tv:h-24 tv:w-24">
-              <svg className="absolute inset-0 h-full w-full animate-spin" viewBox="0 0 48 48" fill="none">
-                <circle cx="24" cy="24" r="20" stroke="rgb(255 255 255 / 0.12)" strokeWidth="4" />
-                <circle
-                  cx="24"
-                  cy="24"
-                  r="20"
-                  stroke="rgb(103 232 249)"
-                  strokeWidth="4"
-                  strokeLinecap="round"
-                  strokeDasharray="62.83"
-                  strokeDashoffset="47"
-                />
-              </svg>
-              <Play className="absolute inset-0 m-auto h-6 w-6 fill-cyan-300 text-cyan-300 tv:h-9 tv:w-9" />
-            </div>
-            <p className="text-base font-semibold text-white tv:text-2xl">Memuat siaran langsung…</p>
+        <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+          <div className="flex items-center gap-3 text-sm text-[#ccc]">
+            <span className="h-5 w-5 animate-spin rounded-full border-2 border-[#444] border-t-[#ff5722]" />
+            Memuat siaran…
           </div>
         </div>
       )}
 
+      <ChannelListPanel
+        open={listOpen}
+        onClose={() => setListOpen(false)}
+        channels={channels}
+        currentId={channel?.id}
+        onSelect={onSelectChannel}
+      />
+
       {error && (
-        <div className="absolute inset-0 grid place-items-center bg-black/60 px-4">
-          <div className="max-w-xl rounded-card border border-red-300/30 bg-red-950/35 p-6 text-center shadow-2xl backdrop-blur-2xl tv:max-w-3xl tv:p-10">
-            <AlertTriangle className="mx-auto h-12 w-12 text-red-300 tv:h-20 tv:w-20" />
-            <p className="mt-4 text-xl font-black tv:text-4xl">{error}</p>
-            <button
-              type="button"
-              onClick={reconnect}
-              className="mt-6 inline-flex min-h-12 items-center gap-2 rounded-full bg-white px-5 font-bold text-slate-950 transition hover:bg-cyan-200 focus:outline-none focus:ring-4 focus:ring-cyan-300/70 tv:min-h-16 tv:px-8 tv:text-2xl"
-            >
-              <RotateCcw className="h-5 w-5 tv:h-8 tv:w-8" />
-              Sambungkan Ulang
+        <div className="absolute inset-0 flex items-center justify-center bg-black/70 px-4">
+          <div className="max-w-sm rounded border border-[#333] bg-[#1a1a1a] p-6 text-center">
+            <AlertTriangle className="mx-auto h-8 w-8 text-[#ff5722]" />
+            <p className="mt-3 text-base font-semibold">{error}</p>
+            <button type="button" onClick={reconnect} className="btn btn-primary mt-5">
+              <RotateCcw className="h-4 w-4" />
+              Coba lagi
             </button>
           </div>
         </div>
       )}
 
-      <motion.div
-        animate={{ opacity: controlsVisible ? 1 : 0, y: controlsVisible ? 0 : 18 }}
-        transition={{ duration: 0.2 }}
-        className="absolute inset-x-0 bottom-0 z-20 p-4 sm:p-6 tv:p-10"
+      <div
+        className="absolute inset-x-0 bottom-0 z-20 p-3 transition-opacity duration-200 sm:p-4"
+        style={{ opacity: controlsVisible ? 1 : 0, pointerEvents: controlsVisible ? 'auto' : 'none' }}
       >
-        <div className="rounded-card border border-white/10 bg-black/45 p-4 shadow-2xl backdrop-blur-2xl tv:p-7">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex min-w-0 items-center gap-4">
+        <div className="rounded border border-[#333] bg-[#1a1a1a]/95 p-3 sm:p-4">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex min-w-0 items-center gap-3">
               <img
                 src={channel.logo}
                 alt={`Logo ${channel.name}`}
-                className="h-14 w-14 rounded-2xl border border-white/10 bg-white/10 object-contain p-2 tv:h-24 tv:w-24"
+                className="h-11 w-11 rounded bg-[#242424] object-contain p-1.5"
                 onError={(event) => {
                   event.currentTarget.style.display = 'none'
                 }}
               />
               <div className="min-w-0">
-                <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-red-500/20 px-3 py-1 text-xs font-black uppercase tracking-[0.18em] text-red-100 tv:text-base">
-                  <span className="h-2 w-2 animate-pulse rounded-full bg-red-400" />
-                  LIVE
-                </div>
-                <h1 className="truncate text-xl font-black sm:text-3xl tv:text-5xl">{channel.name}</h1>
-                <p className="mt-1 text-sm font-semibold uppercase tracking-[0.18em] text-white/50 tv:text-xl">{getCategoryLabel(channel.category)}</p>
+                <span className="live-badge mb-1">Live</span>
+                <h1 className="truncate text-base font-semibold sm:text-lg">{channel.name}</h1>
+                <p className="text-xs text-[#8a8a8a]">{getCategoryLabel(channel.category)}</p>
               </div>
             </div>
 
-            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
               <button type="button" aria-label="Saluran sebelumnya" onClick={onPrevious} className="player-button">
                 <SkipBack />
               </button>
@@ -325,9 +329,18 @@ export default function VideoPlayer({ channel, onNext, onPrevious }) {
                 step="0.01"
                 value={isMuted ? 0 : volume}
                 onChange={onVolumeChange}
-                className="h-12 w-28 accent-cyan-300 tv:w-48"
+                className="h-2 w-24 accent-[#ff5722] sm:h-8 sm:w-28"
                 aria-label="Volume"
               />
+              <button
+                type="button"
+                aria-label="Daftar siaran"
+                aria-pressed={listOpen}
+                onClick={toggleList}
+                className={listOpen ? 'player-button primary' : 'player-button'}
+              >
+                <List />
+              </button>
               {castAvailable && (
                 <button type="button" aria-label="Putar ke Google TV" onClick={toggleCast} className="player-button">
                   <Cast />
@@ -340,7 +353,7 @@ export default function VideoPlayer({ channel, onNext, onPrevious }) {
             </div>
           </div>
         </div>
-      </motion.div>
+      </div>
     </section>
   )
 }
