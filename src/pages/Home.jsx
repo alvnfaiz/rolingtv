@@ -1,7 +1,13 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Play } from 'lucide-react'
-import { formatChannelCount, matchesSearch } from '../lib/ui'
+import {
+  FEATURED_CATEGORY,
+  formatChannelCount,
+  getCategoryLabel,
+  getFeaturedCategoryChannels,
+  matchesSearch,
+} from '../lib/ui'
 import { getChannelsPage, getLocalChannels } from '../lib/channelRegistry'
 import useChannelCatalog from '../hooks/useChannelCatalog'
 import { useTvStore } from '../store/tvStore'
@@ -43,6 +49,7 @@ export default function Home() {
 
   const favorites = useMemo(() => byIds(favoriteIds, channels).slice(0, 8), [favoriteIds, channels])
   const recentlyWatched = useMemo(() => byIds(recentlyWatchedIds, channels).slice(0, 8), [recentlyWatchedIds, channels])
+  const worldCupChannels = useMemo(() => getFeaturedCategoryChannels(channels), [channels])
 
   const catalogPage = useMemo(() => {
     if (query.trim()) {
@@ -56,7 +63,7 @@ export default function Home() {
         totalPages: Math.max(1, Math.ceil(filtered.length / PAGE_SIZE)),
       }
     }
-    return getChannelsPage({ page, pageSize: PAGE_SIZE })
+    return getChannelsPage({ page, pageSize: PAGE_SIZE, excludeCategory: FEATURED_CATEGORY })
   }, [channels, query, page])
 
   const onSearchChange = (value) => {
@@ -112,6 +119,22 @@ export default function Home() {
           {!query && <CategoryFilter categories={categories} />}
         </div>
 
+        {!query && worldCupChannels.length > 0 && (
+          <Section
+            title={getCategoryLabel(FEATURED_CATEGORY)}
+            action={
+              <Link
+                to={`/category/${encodeURIComponent(FEATURED_CATEGORY)}`}
+                className="text-sm font-medium text-[#ff5722] hover:underline"
+              >
+                Semua
+              </Link>
+            }
+          >
+            <ChannelGrid channels={worldCupChannels} />
+          </Section>
+        )}
+
         {recentlyWatched.length > 0 && (
           <Section title="Baru ditonton">
             <ChannelGrid channels={recentlyWatched} />
@@ -131,9 +154,9 @@ export default function Home() {
           </Section>
         )}
 
-        {localChannels.length > 0 && !query && (
+        {!query && localChannels.filter((channel) => channel.category !== FEATURED_CATEGORY).length > 0 && (
           <Section title="Saluran SRG TV">
-            <ChannelGrid channels={localChannels} />
+            <ChannelGrid channels={localChannels.filter((channel) => channel.category !== FEATURED_CATEGORY)} />
           </Section>
         )}
 

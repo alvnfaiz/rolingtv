@@ -1,3 +1,5 @@
+export const FEATURED_CATEGORY = 'FIFA World Cup'
+
 export const categoryLabels = {
   'FIFA World Cup': 'Piala Dunia FIFA',
   Sports: 'Olahraga',
@@ -44,6 +46,23 @@ export const routeLabels = {
 
 export function getCategoryLabel(category = '') {
   return categoryLabels[category] || category
+}
+
+/** Tab kategori: Piala Dunia tetap di ujung (bawah scroll), sisanya abjad. */
+export function sortCategoriesForTabs(categories = []) {
+  const rest = categories
+    .filter((category) => category !== FEATURED_CATEGORY)
+    .sort((a, b) => a.localeCompare(b, 'id'))
+
+  if (categories.includes(FEATURED_CATEGORY)) {
+    return [...rest, FEATURED_CATEGORY]
+  }
+
+  return rest
+}
+
+export function getFeaturedCategoryChannels(channels = []) {
+  return channels.filter((channel) => channel.category === FEATURED_CATEGORY)
 }
 
 export function formatChannelCount(count) {

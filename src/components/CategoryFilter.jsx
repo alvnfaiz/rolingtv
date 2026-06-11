@@ -1,8 +1,9 @@
 import { NavLink } from 'react-router-dom'
-import { getCategoryLabel } from '../lib/ui'
+import { getCategoryLabel, sortCategoriesForTabs } from '../lib/ui'
 
 export default function CategoryFilter({ categories = [], active = 'Semua' }) {
   const isAllActive = active === 'Semua' || active === 'All'
+  const tabCategories = sortCategoriesForTabs(categories)
 
   return (
     <div className="no-scrollbar -mx-1 flex gap-1.5 overflow-x-auto px-1 py-1">
@@ -18,7 +19,7 @@ export default function CategoryFilter({ categories = [], active = 'Semua' }) {
       >
         Semua
       </NavLink>
-      {categories.map((category) => (
+      {tabCategories.map((category) => (
         <NavLink
           key={category}
           to={`/category/${encodeURIComponent(category)}`}

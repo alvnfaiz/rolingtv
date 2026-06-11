@@ -85,11 +85,21 @@ export function findChannelIndex(id) {
   return getMergedChannels().findIndex((channel) => channel.id === id)
 }
 
-export function getChannelsPage({ page = 1, pageSize = 48, category = '', query = '' } = {}) {
+export function getChannelsPage({
+  page = 1,
+  pageSize = 48,
+  category = '',
+  query = '',
+  excludeCategory = '',
+} = {}) {
   let list = getMergedChannels()
 
   if (category) {
     list = list.filter((channel) => channel.category?.toLowerCase() === category.toLowerCase())
+  }
+
+  if (excludeCategory) {
+    list = list.filter((channel) => channel.category !== excludeCategory)
   }
 
   if (query.trim()) {
