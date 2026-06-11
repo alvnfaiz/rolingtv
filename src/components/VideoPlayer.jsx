@@ -18,7 +18,7 @@ import {
 } from 'lucide-react'
 import ChannelListPanel from './ChannelListPanel'
 import FavoriteButton from './FavoriteButton'
-import { normalizeStreamUrl } from '../lib/streamProxy'
+import { resolveStreamUrl } from '../lib/streamProxy'
 import { getCategoryLabel } from '../lib/ui'
 import { useTvStore } from '../store/tvStore'
 
@@ -98,7 +98,10 @@ export default function VideoPlayer({ channel, channels = [], onNext, onPrevious
   const [networkError, setNetworkError] = useState(false)
   const [listOpen, setListOpen] = useState(false)
 
-  const streamUrl = useMemo(() => normalizeStreamUrl(channel?.url), [channel?.url])
+  const streamUrl = useMemo(
+    () => resolveStreamUrl(channel?.url, { useProxy: settings.useStreamProxy }),
+    [channel?.url, settings.useStreamProxy],
+  )
 
   selectedQualityRef.current = selectedQuality
 

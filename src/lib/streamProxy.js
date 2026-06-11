@@ -35,7 +35,7 @@ export function toProxyStreamUrl(url = '') {
   return `${M3U8_PROXY_BASE}${encodeUrlForProxy(normalized)}`
 }
 
-export function resolveStreamUrl(url = '', { useProxy = true } = {}) {
+export function resolveStreamUrl(url = '', { useProxy = false } = {}) {
   const normalized = normalizeStreamUrl(url)
   if (!normalized) return normalized
   return useProxy ? toProxyStreamUrl(normalized) : normalized

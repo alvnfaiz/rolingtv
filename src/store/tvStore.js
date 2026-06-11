@@ -22,6 +22,7 @@ export const useTvStore = create(
         volume: 0.85,
         streamQuality: 'auto',
         reducedMotion: false,
+        useStreamProxy: false,
       },
       setCurrentChannel: (channel) => {
         if (!channel?.id) return

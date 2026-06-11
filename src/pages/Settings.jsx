@@ -55,6 +55,12 @@ export default function Settings() {
           checked={settings.reducedMotion}
           onChange={(reducedMotion) => updateSettings({ reducedMotion })}
         />
+        <ToggleRow
+          title="Proxy M3U8"
+          description="Aktifkan jika siaran gagal karena CORS atau geo-block. Matikan untuk URL langsung."
+          checked={Boolean(settings.useStreamProxy)}
+          onChange={(useStreamProxy) => updateSettings({ useStreamProxy })}
+        />
       </section>
 
       <section className="surface p-4">
@@ -83,7 +89,7 @@ export default function Settings() {
           Hapus riwayat tonton
         </button>
         <p className="px-1 text-center text-xs text-[#666]">
-          HLS.js · kualitas adaptif aktif
+          HLS.js · proxy {settings.useStreamProxy ? 'aktif' : 'nonaktif'}
         </p>
       </section>
     </div>
